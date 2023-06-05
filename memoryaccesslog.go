@@ -21,7 +21,7 @@ type Access struct {
 
 type AccessLogs struct {
 	Logs    []Access
-	Current int
+	Current uint64
 }
 
 type IMemoryAccessLog interface {
@@ -51,7 +51,7 @@ func (a *AccessLogs) writeWord(address uint64, val uint64) error {
 }
 
 func (a *AccessLogs) accessManager(addr uint64, accessType AccessType) ([8]byte, error) {
-	if a.Current >= len(a.Logs) {
+	if a.Current >= uint64(len(a.Logs)) {
 		return [8]byte{}, fmt.Errorf("too many accesses")
 	}
 
