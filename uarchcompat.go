@@ -18,8 +18,35 @@ func (state *State) readHaltFlag() bool {
 	return res
 }
 
+func (state *State) readCycle() uint64 {
+	var res = state.StateI.ReadCycle(state.AccessLogs)
+	state.AccessLogs.Current += 1
+	return res
+}
+
+func (state *State) writeCycle(value uint64) {
+	state.StateI.WriteCycle(state.AccessLogs, value)
+	state.AccessLogs.Current += 1
+}
+
+func (state *State) readX(index uint64) uint64 {
+	var res = state.StateI.ReadX(state.AccessLogs, index)
+	state.AccessLogs.Current += 1
+	return res
+}
+
+func (state *State) writeWord(address uint64, value uint64) {
+	state.StateI.writeWord(state.AccessLogs, address, value)
+	state.AccessLogs.Current += 1
+}
+
 func (state *State) writeX(index uint64, value uint64) {
 	state.StateI.WriteX(state.AccessLogs, index, value)
+	state.AccessLogs.Current += 1
+}
+
+func (state *State) writePc(value uint64) {
+	state.StateI.WritePc(state.AccessLogs, value)
 	state.AccessLogs.Current += 1
 }
 
